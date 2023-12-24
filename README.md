@@ -1,170 +1,29 @@
 
-# 🪴 career-WBS
+# 🚀 Project 관리
 > mermaid로 작성된 과제는 마크다운 파일(WBS.md)로 올려주시면 됩니다. (md 파일 내에 기존 구조를 넣어주세요) <br>
-> 별도 아키택쳐나 모델링 도구를 사용한 경우에는 마크다운 파일(WBS.md)과 png, gif, jpg, pdf 파일 형식으로 WBS-{gitID}.png 파일명으로 upload 해주세요
+> 별도 아키택쳐나 모델링 도구를 사용한 경우에는 마크다운 파일(Project.md)과 png, gif, jpg, pdf 파일 형식으로 Project-{gitID}.png 파일명으로 upload 해주세요
 # 요구사항
 - [ ] 개선하려는 프로젝트의 최종 설계
-    - [ ] 변경 사항에 대한 Target 시스템 설계를 확정한다. (2주차 미션 활용)
-    - [ ] 변경 사항에 대한 기대효과를 확정한다. (2주차 미션 활용)
+    - 3주차에 작성한 markdown파일을 그대로 사용
 - [ ] task list 도출
-    - [ ] 현 시스템에서 변경되는 부분을 class diagram(DB변경이 발생할 경우 ERD추가)으로 작성
-    - [ ] 변경, 추가 될 프로그램들의 작업 목록을 작성한다.
+    - 3주차에 작성한 markdown파일을 그대로 사용
 - [ ] 일정 계획 문서 (WBS)
-  - [ ] 작업목록의 소요일정을 산정 한다.
-  - [ ] 작업 목록의 의존성을 정의 한다.
-  - [ ] 작업 목록의 전체 일정을 작성한다.
-  - [ ] 진행 상태를 check하기위한 마일스톤 설정 한다.
+   - 3주차에 작성한 markdown파일을 그대로 사용
+- [ ] issue list
+   - 프로젝트를 진행 하는 과정에서 발생한 이슈가 있다면 작성.
 
 
 # 🚀미션
-## AS-IS
-### AS-IS 개선포인트 분석
-- 매일 전날의 결제 데이터중 timeout이 발생한 결제 건에 대한 리포트를 받아서 해당건을 확인 하고 있다.
-- timeout이 발생하였을 경우 해당 건이 PG에서 결제가 되엇는지 안되엇는지? 알수 없기 때문에 해당 승인건의 key를 pg사의 관리자 페이지에서 하나하나 확인 한다.
-- 승인되었다면 해당 건을 취소하고 운영DB에 결제 실패로 수기 처리한다.
-- 승인이 되지 않았다면 운영DB에 결제 실패로 수기 처리한다.
-- 매일 timeout건을 확인하고 처리하는데 하루 2시간씩 고정적인 비용이 발생하고 있다. 
- 
-### AS-IS 프로세스
-```mermaid
-flowchart TB
-    A[Start] --주문요청--> B(승인)
-    B --> C{PG요청}
-    C -- Success --> D[주문완료]
-    C -- Fail --> E[결제취소]
-    C -- Timeout --> F[데이터보정]
-```
-
-### Class diagram
-- AS-IS 구조에서 개선을 할때 영향을 받게되는 class diagram을 작성한다.
-```mermaid
-classDiagram 
-
-    class PaymentMethod {
-        +String paymentMethodID
-        pay()
-        cancel()
-    }
-    PaymentMethod <|-- Card
-    PaymentMethod <|-- Bank
-
-    class PG {
-        +String pgID
-        pay()
-        cancel()
-    }
-    PG <|-- Card
-    PG <|-- Bank
+1. 3주차 미션에 진행된 ToBe 개선 프로젝트 WBS를 기반으로 향후 4주간 개선 작업을 진행한다.
+2. 매주 토요일까지 개선된 프로젝트의 진행사항을 Github으로 PR을 요청하고 코치의 리뷰를 받는다.
+    1. 미션을 진행하면서 기술적인 어려움이나 이슈사항이 있다면 이슈사항을 작성하고 리뷰를 진행한다.
+    2. WBS상에서 진행된 과제들은 'Done'으로 상태를 update한다.
+3. 이슈 사항이 있을 경우 설계의 수정이나 일정의 변경이 필요하면 수정 한다.
+4. 수정된 계획을 기반으로 다음주 개선작업을 진행하고 1~4의 과정을 4주간 반복한다.
 
 
-    class Payment {
-        +String paymentID
-        +String transactionID
-        void pay()
-    }
-
-    class Cancel {
-        +String cancelID
-        +PaymentID paymentID
-        +String transactionID
-        void cancel()
-    }
-
-    class CancelDetail {
-        +String cancelDetailID
-        +String cancelID
-    }
-
-    class PaymentDetail {
-        +PaymentID paymentID
-    }
-
-
-    class Card {
-        CardID
-        pay()
-        cancel()
-        checkTransaction()
-    }
-    note for Card "checkTransaction() : 결제내역확인"
-
-    class Bank {
-        BankID
-        pay()
-        cancel()
-        checkTransaction()
-    }
-    note for Bank "checkTransaction() : 결제내역확인"
-
-   Payment "1" -- "*" PaymentDetail : 결제수단, 금액, 상품 정보
-   Cancel "1" -- "*" CancelDetail : 결제수단, 금액, 상품 정보
-   Cancel "0..1" --> "1" Payment : 원결제 정보
-   Payment --> PaymentMethod : 결제요청
-   Cancel --> PaymentMethod : 취소요청
-
-
-```
-
-
-### ERD
--AS-IS 구조에서 개선을 할때 영향을 받게되는 ERD를 작성한다.
-
-```mermaid
-erDiagram
-  Payment {
-    Integer id 
-    String name
-  }
-  Payment ||--|{ PaymentDetail : has
-
-  PaymentMethod {
-    Integer id
-    String name 
-  }
-
-  PaymentDetail {
-    Integer id
-    Integer paymentId
-    Integer paymentMethodId
-    Long productId
-    Integer amount
-    Integer quantity
-    Integer unitPrice
-    String productInfo
-  }
-  PaymentDetail ||--|{ PaymentMethod : fundingsource
-
-  Cancel {
-    Integer id
-    Integer paymentId
-    String transactionId
-  }
-  Cancel ||--|{ CancelDetail : has
-  CancelDetail ||--|{ PaymentMethod : fundingsource
-
-  CancelDetail {
-    Integer id
-    Integer cancelId
-    Integer amount
-    String productInfo
-  }
-
-  PaymentDetail {
-    String paymentId
-    String paymentMethodId
-  }
-
-  CancelDetail {
-    String cancelId
-  }
-
-  
-```
-
-
-
-## TO-BE 
-### TO-BE 기대효과 분석
+## 실무계선 Project
+### 실무계선 Project 기대효과 분석
 - timeout 건을 처리하는데 매일 소요되는 2시간의 업무 시간을 30분 내외로 줄일 수 있다.
 - 사람이 직접 하는 부분을 자동화 하여 실수를 줄일 수 있다.
     - 가끔 결제가 되었는데 timeout건으로 나왔으나 수기처리시 누락된 경우 고객의 CS 클래임이 인입되고 좋지않은 고객경험을 준다.
@@ -172,7 +31,7 @@ erDiagram
 - 익일 처리되던 프로세스를 5분단위의 batch로 처리하여서 고객만족을 줄 수 있다.
     - 주문은 실패 했지만 결제가 되었다는 CS 건 3건/week를 0건으로 줄일 수 있다.
  
-### TO-BE 프로세스
+### 실무계선 Project 프로세스
 ```mermaid
 flowchart TB
  G[Start] --주문요청 --> H(승인)
@@ -276,7 +135,7 @@ classDiagram
     
 
 ### ERD
-- TO-BE 구조에서 변경되는 ERD를 작성한다.
+- 실무계선 Project 구조에서 변경되는 ERD를 작성한다.
 ```mermaid
 erDiagram
   Payment {
@@ -395,4 +254,7 @@ gantt
     Test & QA                           :after c4, 2d
 
 ```
+
+## Issue list
+1. 일정 시작이 지연됨 (1W)
 
