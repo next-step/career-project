@@ -235,9 +235,9 @@ gantt
 
     section prepare
     요구사항분석                    :done,    des1, 2023-12-01, 10d
-    설계                            :active,  des2, 2023-12-11, 3d
-    일정산정                        :         des3, after des2, 1d
-    Timeout log table 설계, 생성    :       des4, 2023-12-27, 1d
+    설계                            :done,  des2, 2023-12-11, 3d
+    일정산정                        :done     des3, after des2, 1d
+    Timeout log table 설계, 생성    :done       des4, 2023-12-27, 1d
 
     section 기존 모듈 수정
     Payment timeout event 발생          :crit, b1, 2024-01-03,2d
