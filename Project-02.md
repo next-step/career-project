@@ -145,3 +145,5 @@ gantt
 2. ~~테스트 과정에서, 테스트 라이브러리 세팅부터 되어 있지 않아서, jest 세팅을 별도로 진행하였음. 기존에 작성된 테스트 코드가 있었으면, 테스트 과정이 좀 더 수월했을 듯 함~~
 3. ~~초기에는 Custom Repository 를 만들지 않고, Service 에서 바로 DB 접근을 하였는데, 이 부분을 더 나누어서, Custom Repository 를 만들어서, Service 에서는, Custom Repository 를 호출하도록 중간에 구조를 변경하였음~~
 4. ~~BoardService 에서도, 보드 권한 관련된 비즈니스 로직을 BoardPermissionService 로 분리하여서, 유지보수성을 높임~~
+5. ~~transaction 이 필요한 Custom Repository 함수들의 경우, custom repository 의 함수의 파라미터로 transaction manager 를 받아서, transaction 내에서 수행하도록 추가함~~
+
