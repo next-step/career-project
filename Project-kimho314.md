@@ -70,7 +70,7 @@ redisson:
     retryAttempts: 3
     retryInterval: 1500
     subscriptionsPerConnection: 5
-    address: "redis://cjconnect-prod.nv48hb.ng.0001.apn2.cache.amazonaws.com:6379"
+    address: "redis://${redis}}:6379"
     subscriptionConnectionMinimumIdleSize: 1
     subscriptionConnectionPoolSize: 50
     connectionMinimumIdleSize: 24
