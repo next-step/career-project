@@ -46,39 +46,6 @@
       auto-commit: false
 ```
 
--   connection-timeout : 데이터 건수가 많지 않고(100만 row미만)
--   validation-timeout : traffic이 높지 않은 상황이라 default값보다 작게 잡음
--   minimum-idle :
-    -   서비스 TPS가 1미만이며 peak 트래픽도 2~3정도
-    -   요청마다 사용하는 커넥션은 1개 정도 이며 멀티스레드로 동작하는 부분이 없음.
--   max-lifetime :
-    -   동일 network대역에 db서버가 있다.
-    -   대부분의 traffic이 적은 편이다.
--
-
-#### [redisson](https://github.com/redisson/redisson/wiki/2.-Configuration/#26-single-instance-mode)
-
--   redis 연결을 위한 java client로 사용합니다
--   위치 데이터 캐싱 및 분산락을 위해 사용합니다
-
-```
-redisson:
-  singleServerConfig:
-    idleConnectionTimeout: 10000
-    connectTimeout: 10000
-    timeout: 5000
-    retryAttempts: 3
-    retryInterval: 1500
-    subscriptionsPerConnection: 5
-    address: "redis://${redis}}:6379"
-    subscriptionConnectionMinimumIdleSize: 1
-    subscriptionConnectionPoolSize: 50
-    connectionMinimumIdleSize: 24
-    connectionPoolSize: 100
-    database: 0
-    dnsMonitoringInterval: 5000
-```
-
--   connectTimeout : PG사의 설정 가이드 수치 적용
--   readTimeout :PG사의 설정 가이드 수치 적용
--   retryer : 1초의 간격으로 시작해 최대 5초의 간격으로 점점 증가하며, 최대5번 재시도한다.
+-   maximum-pool-size: 기존에 기본값인 10을 사용하닥 접속자가 2배로 늘게되어 기본값의 2배인 20으로 설정함
+-   connection-timeout: tomcat의 timeout이 5s라 connection-timeout도 이와 같은 5s로 설정함
+-   max-lifetime : postgresql tcp 유지시간인 10분보다 작게 설정함
