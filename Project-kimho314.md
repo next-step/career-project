@@ -43,9 +43,13 @@
       connection-timeout: 5000 #5s
       idle-timeout: 50000 #50s
       max-lifetime: 50000 #50s
-      auto-commit: false
+      auto-commit: false # 해당 옵션을 true로 해주면 트랜잭션안에 두 개의 쿼리가 있을때 두 번째 쿼리가 실패해도 첫 번째 쿼리는 commit이 되어 데이터베이스에 반영되기 때문제 두 번째 쿼리가 롤백되도 트랜잭션 전체가 롤백되지 않게 됩니다
 ```
 
--   maximum-pool-size: 기존에 기본값인 10을 사용하닥 접속자가 2배로 늘게되어 기본값의 2배인 20으로 설정함
--   connection-timeout: tomcat의 timeout이 5s라 connection-timeout도 이와 같은 5s로 설정함
--   max-lifetime : postgresql tcp 유지시간인 10분보다 작게 설정함
+1. 설정 분석
+
+-   maximum-pool-size: 최대 pool 사이즈
+-   connection-timeout: connection pool로부터 연결을 맺기위해 기다리는 최대 시간(ms)
+-   idle-timeout : connection이 pool에 idle상태로 남을 수 있는 최대 시간(ms)
+-   max-lifetime : connection이 pool에서 살아있는 최대 시간(ms)
+-   auto-commit : autocommit 옵션을 활성화/비활성화 함
