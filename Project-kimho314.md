@@ -48,8 +48,8 @@
 
 1. 설정 분석
 
--   maximum-pool-size: 최대 pool 사이즈 (pool size = T_n \* (C_m-1) + 1)
+-   maximum-pool-size: 최대 pool 사이즈 (pool size = T_n \* (C_m-1) +)
 -   connection-timeout: connection pool로부터 연결을 맺기위해 기다리는 최대 시간(ms)
--   idle-timeout : connection이 pool에 idle상태로 남을 수 있는 최대 시간(ms)
--   max-lifetime : connection이 pool에서 살아있는 최대 시간(ms)
+-   idle-timeout : connection이 pool에 idle상태로 남을 수 있는 최대 시간(ms). idle-timeout은 max-lifetime보다 작은 값이어야 의미가 있음.
+-   max-lifetime : connection이 pool에서 살아있는 최대 시간(ms). db의 wait_timeout(idle_transaction_session_timeout)보다 작게 설정해야 의미가 있음.
 -   auto-commit : autocommit 옵션을 활성화/비활성화 함
